@@ -30,8 +30,6 @@ clients.from.on("message", async (message) => {
   const command = args.shift().toLowerCase()
 
   if (command === "trans" || command === "transfer") {
-    message.delete()
-
     const channels = message.guild.channels.cache.array()
     const voice_channels = channels.filter((channel) => channel.type === "voice")
 

@@ -1,5 +1,10 @@
 module.exports = {
   prefix: "&",
-  from_bot_permission: 70257728,
-  to_bot_permission: 70255616
+  // from_bot_permission: 70265920,
+  // to_bot_permission: 70255616,
+
+  // Why Add Administrator?
+  // Because bot can't join private channels
+  from_bot_permission: 8,
+  to_bot_permission: 8
 }
