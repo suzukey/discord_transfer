@@ -47,11 +47,11 @@ clients.from.on("message", async (message) => {
     }
 
     let remain_vc = voice_channels
-    const from_ch = await question_channels(message, remain_vc, "Voice transfer to")
+    const from_ch = await question_channels(message, remain_vc, "from")
     if (!from_ch) return
 
     remain_vc = remain_vc.filter((channel) => channel !== from_ch)
-    const to_ch = await question_channels(message, remain_vc, "Voice transfer to")
+    const to_ch = await question_channels(message, remain_vc, `from ${from_ch.name} to`)
     if (!to_ch) return
 
     // Assign a channel to each client
@@ -60,7 +60,7 @@ clients.from.on("message", async (message) => {
   }
 })
 
-const question_channels = async (message, channels, question_desc) => {
+const question_channels = async (message, channels, direction) => {
   const emojis = require("./config/emojis.json")
 
   const ch_count = channels.length
@@ -76,7 +76,7 @@ const question_channels = async (message, channels, question_desc) => {
     embed: {
       color: 0xe2b618,
       title: "Select Channel",
-      description: question_desc,
+      description: `Voice transfer ${direction}`,
       fields: []
     }
   }
@@ -84,7 +84,8 @@ const question_channels = async (message, channels, question_desc) => {
   for (let i = 0; i < ch_count; i++) {
     const field = {
       name: ch_emojis[i],
-      value: channels[i].name
+      value: channels[i].name,
+      inline: true
     }
     question.embed.fields.push(field)
   }
@@ -117,7 +118,7 @@ const question_react = async (message, emojis, question) => {
 
   const answer_reaction = await question_msg.awaitReactions(filter, {
     max: 1,
-    time: 10000
+    time: 15000
   })
   await question_msg.delete()
 
