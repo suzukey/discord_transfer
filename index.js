@@ -6,8 +6,8 @@ if (Number(process.version.slice(1).split(".")[0]) < 12)
 // Load up the discord.js library
 const discord = require("discord.js")
 
-const secrets = require("./config/secrets.json")
-const config = require("./config/settings.json")
+const secrets = require("./config/secrets")
+const config = require("./config/settings")
 
 const clients = {
   from: new discord.Client(),
@@ -21,7 +21,6 @@ const login = async () => {
 
 clients.from.once("ready", () => {
   console.log(`transfer_from: ${clients.from.user.tag} on ready`)
-  clients.from.voice
 })
 
 clients.to.once("ready", () => {
@@ -61,7 +60,7 @@ clients.from.on("message", async (message) => {
 })
 
 const question_channels = async (message, channels, direction) => {
-  const emojis = require("./config/emojis.json")
+  const emojis = require("./config/emojis")
 
   const ch_count = channels.length
 

@@ -1,4 +1,4 @@
-[
+module.exports = [
   "\ud83c\udde6",
   "\ud83c\udde7",
   "\ud83c\udde8",
