@@ -3,20 +3,15 @@
 if (Number(process.version.slice(1).split(".")[0]) < 12)
   throw new Error("Node 12.0.0 or higher is required. Update Node on your system.")
 
-// Load up the discord.js library
-const discord = require("discord.js")
+const transfer = require("./modules/core")
 
 const secrets = require("./config/secrets")
 const config = require("./config/settings")
 
-const clients = {
-  from: new discord.Client(),
-  to: new discord.Client()
-}
+const clients = new transfer.Transfer()
 
-const login = async () => {
-  clients.from.login(secrets.from_token)
-  clients.to.login(secrets.to_token)
+const init = async () => {
+  clients.login(secrets.from_token, secrets.to_token)
 }
 
 clients.from.once("ready", () => {
@@ -124,4 +119,4 @@ const question_react = async (message, emojis, question) => {
   if (answer_reaction.size) return answer_reaction.first()._emoji.name
 }
 
-login()
+init()
