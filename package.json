@@ -1,0 +1,25 @@
+{
+  "name": "discord_transfer",
+  "version": "0.1.0",
+  "description": "Discord voice transfer to other channel",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suzukey/discord_transfer"
+  },
+  "author": "suzukey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/suzukey/discord_transfer/issues"
+  },
+  "homepage": "https://github.com/suzukey/discord_transfer#readme",
+  "dependencies": {
+    "discord.js": "^12.3.1"
+  }
+}

@@ -1,0 +1,5 @@
+# Dependency directories
+node_modules/
+
+# Secrets config store
+config/secrets.json
