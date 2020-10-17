@@ -32,6 +32,10 @@ clients.from.on("message", async (message) => {
   if (command === "trans" || command === "transfer") {
     require("./commands/transfer")(clients, message, args)
   }
+
+  if (command == "leave") {
+    clients.leave(message.guild.id)
+  }
 })
 
 init()

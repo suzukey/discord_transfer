@@ -20,6 +20,12 @@ class Transfer {
     const guild = new Guild(from_connection, to_connection)
     this.guilds[guild.id] = guild
   }
+
+  leave = (guild_id) => {
+    if (!(guild_id in this.guilds)) return
+    this.guilds[guild_id].leave()
+    delete this.guilds[guild_id]
+  }
 }
 
 class Guild {
@@ -47,12 +53,15 @@ class Guild {
     this.connection.to.play(new Silence(), { type: "opus" })
 
     this.connection.from.on("speaking", (user, speaking) => {
-      if (speaking.bitfield === 1) {
-        console.log("speaking")
-      } else {
-        console.log("off")
-      }
+      if (speaking.bitfield !== 1) return
+      const stream = this.connection.from.receiver.createStream(user.id)
+      this.connection.to.play(stream, { type: "opus" })
     })
+  }
+
+  leave = async () => {
+    this.connection.from.disconnect()
+    this.connection.to.disconnect()
   }
 }
 
