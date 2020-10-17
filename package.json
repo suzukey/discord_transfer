@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/suzukey/discord_transfer#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.3.1"
   }
 }
