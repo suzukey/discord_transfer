@@ -1,4 +1,5 @@
 const discord = require("discord.js")
+const Silence = require("./silence")
 
 class Transfer {
   from = null
@@ -33,22 +34,28 @@ class Guild {
     const from_ch = from_connection.channel
     const to_ch = to_connection.channel
 
-    if (from_ch.guild.id !== to_ch.guild.id) {
-      throw "construct error"
-    }
-    if (from_ch.id === to_ch.id) {
-      throw "construct error"
-    }
+    if (from_ch.guild.id !== to_ch.guild.id) throw "construct error"
+    if (from_ch.id === to_ch.id) throw "construct error"
 
     this.id = from_ch.guild.id
     this.connection = {
       from: from_connection,
       to: to_connection
     }
+
+    this.connection.from.play(new Silence(), { type: "opus" })
+    this.connection.to.play(new Silence(), { type: "opus" })
+
+    this.connection.from.on("speaking", (user, speaking) => {
+      if (speaking.bitfield === 1) {
+        console.log("speaking")
+      } else {
+        console.log("off")
+      }
+    })
   }
 }
 
 module.exports = {
-  Transfer,
-  Guild
+  Transfer
 }
