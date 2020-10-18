@@ -1,5 +1,5 @@
 const discord = require("discord.js")
-const Silence = require("./silence")
+const { Silence } = require("./audio")
 
 class Transfer {
   from = null

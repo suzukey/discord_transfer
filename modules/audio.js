@@ -8,4 +8,14 @@ class Silence extends Readable {
   }
 }
 
-module.exports = Silence
+class Audio {
+  stream = null
+
+  constructor() {
+    this.stream = new Silence()
+  }
+
+  static conbine = (audio_streams) => {}
+}
+
+module.exports = { Audio, Silence }
