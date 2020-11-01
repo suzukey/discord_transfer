@@ -8,6 +8,10 @@
 
 # discord_transfer
 
+<p align="center">
+  <img width="420px" src="https://raw.githubusercontent.com/suzukey/discord_transfer/main/docs/img/rendering_image.png" alt='discord_transfer'>
+</p>
+
 ## Requirements
 
 Node 12+
