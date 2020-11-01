@@ -9,7 +9,7 @@
 # discord_transfer
 
 <p align="center">
-  <img width="420px" src="https://raw.githubusercontent.com/suzukey/discord_transfer/main/docs/img/rendering_image.png" alt='discord_transfer'>
+  <img width="420px" src="https://raw.githubusercontent.com/suzukey/discord_transfer/main/docs/img/rendering_image.gif" alt='rendering image'>
 </p>
 
 ## Requirements
@@ -32,6 +32,13 @@ Install dependencies & Run bots
 ```shell
 $ npm install
 $ npm run start
+```
+
+To start the bot in the current guild, Send `&trans` command in Discord
+
+```
+&trans
+# Select a channel and start the transfer
 ```
 
 <p align="center">&mdash; 📣 &mdash;</p>
