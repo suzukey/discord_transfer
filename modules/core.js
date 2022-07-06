@@ -1,6 +1,6 @@
 const discord = require("discord.js")
 const { Silence } = require("./audio")
-
+const AudioMixer = require("audio-mixer");
 class Transfer {
   from = null
   to = null
@@ -35,6 +35,7 @@ class Guild {
     to: null
   }
   volumes = {}
+  audioMixer = null
 
   constructor(from_connection, to_connection) {
     const from_ch = from_connection.channel
@@ -52,10 +53,39 @@ class Guild {
     this.connection.from.play(new Silence(), { type: "opus" })
     this.connection.to.play(new Silence(), { type: "opus" })
 
+    const mixer = new AudioMixer.Mixer({
+      channels: 2,
+      bitDepth: 16,
+      sampleRate: 48000
+    });
+
+    this.connection.to.play(mixer, { type: 'converted' });
+    this.audioMixer = mixer;
+
     this.connection.from.on("speaking", (user, speaking) => {
-      if (speaking.bitfield !== 1) return
-      const stream = this.connection.from.receiver.createStream(user.id)
-      this.connection.to.play(stream, { type: "opus" })
+      if (speaking) {
+        if (this.audioMixer == null) {
+          throw "audioMixer is null";
+        }else{
+          const stream = this.connection.from.receiver.createStream(user, { mode: "pcm" });
+          const standaloneInput = new AudioMixer.Input({
+              channels: 2,
+              bitDepth: 16,
+              sampleRate: 48000,
+              volume: 80
+          });
+          this.audioMixer.addInput(standaloneInput);
+          const p = stream.pipe(standaloneInput);
+          stream.on('end', () => {
+            if (this.audioMixer != null) {
+              this.audioMixer.removeInput(standaloneInput);
+              standaloneInput.destroy();
+              stream.destroy();
+              p.destroy();
+            }
+          });
+        }
+      }
     })
   }
 
