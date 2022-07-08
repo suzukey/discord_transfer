@@ -90,8 +90,9 @@ class Guild {
   }
 
   leave = async () => {
-    this.connection.from.disconnect()
-    this.connection.to.disconnect()
+    this.connection.from.disconnect();
+    this.connection.to.disconnect();
+    this.audioMixer.close();
   }
 }
 
