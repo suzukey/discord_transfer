@@ -7,8 +7,52 @@ const command = async (clients, message, args) => {
     return
   }
 
+  let targets = null
+  // Recognized as specifying a channel name with two arguments
+  if (args.length === 2) {
+    targets = await select_channels_from_args(message, voice_channels, args[0], args[1])
+  } else {
+    targets = await emoji_channel_selector(message, voice_channels)
+  }
+
+  if (!targets) {
+    return
+  }
+
+  const { from_ch, to_ch } = targets
+
+  // Assign a channel to each client
+  const conn_from = await clients.from.channels.cache.get(from_ch.id).join()
+  const conn_to = await clients.to.channels.cache.get(to_ch.id).join()
+
+  clients.connect(conn_from, conn_to)
+  message.channel.send(`Transfer voice from \`${from_ch.name}\` to \`${to_ch.name}\``)
+}
+
+const select_channels_from_args = async (
+  message,
+  voice_channels,
+  target_from_name,
+  target_to_name
+) => {
+  const from_ch = voice_channels.find((channel) => channel.name === target_from_name)
+  if (!from_ch) {
+    message.channel.send("error: From channel is not exist")
+    return
+  }
+  const remain_vc = voice_channels.filter((channel) => channel !== from_ch)
+  const to_ch = remain_vc.find((channel) => channel.name === target_to_name)
+  if (!to_ch) {
+    message.channel.send("error: To channel is not exist")
+    return
+  }
+
+  return { from_ch, to_ch }
+}
+
+const emoji_channel_selector = async (message, voice_channels) => {
   let remain_vc = voice_channels
-  const from_ch = await question_channels(message, remain_vc, "from")
+  const from_ch = remain_vc
   if (!from_ch) {
     message.channel.send("error: No channel selected")
     return
@@ -20,12 +64,7 @@ const command = async (clients, message, args) => {
     return
   }
 
-  // Assign a channel to each client
-  const conn_from = await clients.from.channels.cache.get(from_ch.id).join()
-  const conn_to = await clients.to.channels.cache.get(to_ch.id).join()
-
-  clients.connect(conn_from, conn_to)
-  message.channel.send(`Transfer voice from \`${from_ch.name}\` to \`${to_ch.name}\``)
+  return { from_ch, to_ch }
 }
 
 const question_channels = async (message, channels, direction) => {
@@ -39,7 +78,7 @@ const question_channels = async (message, channels, direction) => {
 
   // Prepare as many emoji as their channels
   const ch_emojis = emojis.slice(0, ch_count)
-  let question = {
+  const question = {
     embed: {
       color: 0xe2b618,
       title: "Select Channel",
