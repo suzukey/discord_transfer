@@ -1,6 +1,6 @@
 const discord = require("discord.js")
 const { Silence } = require("./audio")
-const AudioMixer = require("audio-mixer");
+const AudioMixer = require("audio-mixer")
 class Transfer {
   from = null
   to = null
@@ -57,42 +57,44 @@ class Guild {
       channels: 2,
       bitDepth: 16,
       sampleRate: 48000
-    });
+    })
 
-    this.connection.to.play(mixer, { type: 'converted' });
-    this.audioMixer = mixer;
+    this.connection.to.play(mixer, { type: "converted" })
+    this.audioMixer = mixer
 
     this.connection.from.on("speaking", (user, speaking) => {
       if (speaking) {
         if (this.audioMixer == null) {
-          throw "audioMixer is null";
-        }else{
-          const stream = this.connection.from.receiver.createStream(user, { mode: "pcm" });
+          throw "audioMixer is null"
+        } else {
+          const stream = this.connection.from.receiver.createStream(user, {
+            mode: "pcm"
+          })
           const standaloneInput = new AudioMixer.Input({
-              channels: 2,
-              bitDepth: 16,
-              sampleRate: 48000,
-              volume: 80
-          });
-          this.audioMixer.addInput(standaloneInput);
-          const p = stream.pipe(standaloneInput);
-          stream.on('end', () => {
+            channels: 2,
+            bitDepth: 16,
+            sampleRate: 48000,
+            volume: 80
+          })
+          this.audioMixer.addInput(standaloneInput)
+          const p = stream.pipe(standaloneInput)
+          stream.on("end", () => {
             if (this.audioMixer != null) {
-              this.audioMixer.removeInput(standaloneInput);
-              standaloneInput.destroy();
-              stream.destroy();
-              p.destroy();
+              this.audioMixer.removeInput(standaloneInput)
+              standaloneInput.destroy()
+              stream.destroy()
+              p.destroy()
             }
-          });
+          })
         }
       }
     })
   }
 
   leave = async () => {
-    this.connection.from.disconnect();
-    this.connection.to.disconnect();
-    this.audioMixer.close();
+    this.connection.from.disconnect()
+    this.connection.to.disconnect()
+    this.audioMixer.close()
   }
 }
 
