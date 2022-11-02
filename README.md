@@ -37,8 +37,14 @@ $ npm run start
 To start the bot in the current guild, Send `&trans` command in Discord
 
 ```
+# Select channels and start the transfer
 &trans
-# Select a channel and start the transfer
+
+# Join by specifying the channel names argument
+&trans [FromChannelName] [ToChannelName]
+
+# Leave channels and end the transfer
+&leave
 ```
 
 <p align="center">&mdash; 📣 &mdash;</p>
